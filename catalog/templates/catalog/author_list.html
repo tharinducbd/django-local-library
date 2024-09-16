@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Local Library - List of Authors</title>
+{% endblock %}
+
+{% block content %}
+
+    <h2>List of Authors ({{ author_count }})</h2>
+    <p>These are the authors of out currently owned books.</p>
+
+    <ul>
+        {% for author in object_list %}
+            <li>
+                <a href="{{ author.get_absolute_url }}">{{ author }}</a>
+                ({{ author.book_set.count }} books)
+            </li>
+        {% empty %}
+            <p>There are no authors added yet.</p>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

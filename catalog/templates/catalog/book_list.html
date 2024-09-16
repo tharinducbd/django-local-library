@@ -1,0 +1,27 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Local Library - All Books</title>
+{% endblock %}
+
+{% block content %}
+
+    <h1>List of Books</h1>
+    <p>
+        This is the list of books owned by the library.
+    </p>
+
+    {% if object_list %}
+        <ul>
+            {% for book in object_list %}
+                <li>
+                    <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+                    ({{ book.author }}) ( Copies: {{ book.bookinstance_set.count }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are not books in the library.</p>
+    {% endif %}
+
+{% endblock %}

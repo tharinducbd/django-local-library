@@ -1,0 +1,34 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Local Library - Delete Author</title>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Delete Author: {{ author }}</h2>
+
+    {% if author.book_set.all %}
+
+        <p>You can't delete this author until all their books have been deleted:</p>
+        <ul>
+            {% for book in author.book_set.all %}
+                <li>
+                    <a href="{% url 'catalog:book-detail' book.pk %}"></a>{{ book }}
+                    ({{ book.book_instance_set.count }})
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+
+        <p>Are you sure you want to delete the author?</p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" action="" value="Yes, delete.">
+        </form>
+
+    {% endif %}
+
+{% endblock %}
