@@ -1,0 +1,31 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Local Library - Delete Book</title>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Delete Book: {{ book }}</h2>
+
+    {% if book.bookinstance_set.all %}
+
+        <p>You can't delete this book until all its book instances have been deleted:</p>
+        <ul>
+            {% for bookinst in book.bookinstance_set.all %}
+                <li>{{ bookinst }}</li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+
+        <p>Are you sure you want to delete the book?</p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" action="" value="Yes, delete.">
+        </form>
+
+    {% endif %}
+
+{% endblock %}

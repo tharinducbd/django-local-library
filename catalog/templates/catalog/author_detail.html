@@ -1,0 +1,55 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+    <title>Local Library - All Authors</title>
+{% endblock %}
+
+{% block content %}
+
+    <h1>Author information: {{ object.first_name }} {{ author.last_name }}</h1>
+
+    <p>
+        <strong>Date of birth:</strong>
+        {% if author.date_of_birth %} {{ author.date_of_birth }}
+        {% else %} Record not found.
+        {% endif %}
+    </p>
+
+    {% if author.date_of_death %}
+        <p><strong>Date of death:</strong> {{ author.date_of_death }}</p>
+    {% endif %}
+
+    <div style="margin-left:20px;margin-top:20px;">
+        <h3>Books</h3>
+
+        {% for book in author.book_set.all %}
+            <hr>
+            <p>
+                <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+                ({{ book.bookinstance_set.count }})
+                <br>
+                {{ book.summary }}
+            </p>
+        {% empty %}
+            <p class="text-info">We are yet to obtain books written by {{ author }}</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+
+    {% if perms.catalog.change_author or perms.catalog.delete_author %}
+        <hr>
+        <ul class="sidebar-nav">
+            {% if perms.catalog.change_author %}
+                <li><a href="{% url 'catalog:author-update' author.id %}">Update author</a></li>
+            {% endif %}
+            {% if not author.book_set.all and perms.catalog.delete_author %}
+                <li><a href="{% url 'catalog:author-delete' author.id %}">Delete author</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
